@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Qari Clinic | قاری کلنک</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body { font-family: 'Arial', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <!-- Header -->
+  <header class="bg-green-800 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Qari Clinic</h1>
+      <button onclick="toggleLanguage()" class="bg-white text-green-800 px-4 py-1 rounded">اردو</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="text-center py-10 bg-white">
+    <h2 class="text-3xl font-bold mb-4">Welcome to Qari Clinic</h2>
+    <p class="text-lg">Your source for spiritual & herbal healing, duas, and Islamic guidance</p>
+  </section>
+
+  <!-- Main Sections -->
+  <section class="grid md:grid-cols-3 gap-4 p-6">
+    <a href="#wazaif" class="bg-green-100 p-4 rounded shadow hover:bg-green-200 transition">
+      <h3 class="text-xl font-semibold mb-2">Spiritual Wazaif</h3>
+      <p>Duas for love, rizq, healing, children, and protection</p>
+    </a>
+    <a href="#medical" class="bg-green-100 p-4 rounded shadow hover:bg-green-200 transition">
+      <h3 class="text-xl font-semibold mb-2">Medical Advice</h3>
+      <p>Prophetic and herbal treatments for every illness</p>
+    </a>
+    <a href="#media" class="bg-green-100 p-4 rounded shadow hover:bg-green-200 transition">
+      <h3 class="text-xl font-semibold mb-2">Audio / Video</h3>
+      <p>YouTube content, MP3 ruqyah, lectures, and downloads</p>
+    </a>
+  </section>
+
+  <!-- Spiritual Wazaif Section -->
+  <section id="wazaif" class="p-6 bg-white border-t">
+    <h2 class="text-2xl font-bold mb-4">Spiritual Wazaif</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li><strong>Love & Affection:</strong> Surah Yusuf Ayah 4 – Recite after every prayer.</li>
+      <li><strong>Rizq (Provision):</strong> Surah Waqiah every night before sleeping.</li>
+      <li><strong>Healing:</strong> Surah Fatiha + Ayat al-Shifa daily 3 times.</li>
+      <li><strong>Protection from Jinn:</strong> Surah Baqarah – play daily in the home.</li>
+      <li><strong>Children:</strong> Surah Maryam daily after Fajr.</li>
+    </ul>
+  </section>
+
+  <!-- Medical Advice Section -->
+  <section id="medical" class="p-6 bg-gray-50 border-t">
+    <h2 class="text-2xl font-bold mb-4">Medical Advice (Tibb-e-Nabawi)</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li><strong>Black Seed (Kalwanji):</strong> Cure for every disease except death – use daily in small quantity.</li>
+      <li><strong>Honey:</strong> Natural healer – take one spoon with warm water every morning.</li>
+      <li><strong>Hijama (Cupping):</strong> Sunnah treatment – recommended especially on 17th, 19th, or 21st of Islamic month.</li>
+      <li><strong>Olive Oil:</strong> Eat and apply – Prophet (SAW) said it is a blessed tree.</li>
+      <li><strong>Senna Leaves:</strong> Effective for constipation – use as herbal tea.</li>
+    </ul>
+  </section>
+
+  <!-- Audio / Video Section -->
+  <section id="media" class="p-6 bg-white border-t">
+    <h2 class="text-2xl font-bold mb-4">Audio / Video (آڈیو / ویڈیو)</h2>
+    <p class="mb-2">فی الحال کوئی ویڈیوز یا آڈیوز دستیاب نہیں۔ آپ کی دعاؤں کا انتظار ہے تاکہ یہ سیکشن مزید فعال ہو سکے۔</p>
+    <p>InshaAllah, new content including Ruqyah MP3s, spiritual lectures, and YouTube videos will be added soon.</p>
+
+    <!-- Placeholder Video Section -->
+    <div class="mt-6">
+      <p class="mb-2 font-semibold">نمونہ ویڈیو (جب دستیاب ہو):</p>
+      <div class="aspect-w-16 aspect-h-9">
+        <iframe class="w-full h-full" src="https://www.youtube.com/embed/code_expired" title="Sample Video" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <p class="text-sm text-red-500 mt-2">نوٹ: یہ ویڈیو لنک فی الحال درست نہیں ہے۔ اصل مواد آنے پر اپڈیٹ کیا جائے گا۔</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-green-800 text-white text-center p-4 mt-10">
+    <p>© 2025 Qari Clinic | قاری کلنک - All rights reserved</p>
+  </footer>
+
+  <script>
+    function toggleLanguage() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
