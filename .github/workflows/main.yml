@@ -1,15 +1,8 @@
-# موجودہ فائل ڈیلیٹ کریں
-rm .github/workflows/flutter.yml
-
-# نئی فائل بنائیں
-cat > .github/workflows/flutter.yml << 'EOF'
-name: Flutter CI
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -19,25 +12,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        flutter-version: '3.13.0'
+        node-version: '18'
         
     - name: Install dependencies
-      run: flutter pub get
+      run: npm install
+      working-directory: ./digital-watch-pwa  # ← یہاں اپنا اصل فولڈر لکھیں
       
-    - name: Analyze code
-      run: flutter analyze
+    - name: Build project
+      run: npm run build
+      working-directory: ./digital-watch-pwa  # ← یہی فولڈر یہاں بھی رکھیں
       
-    - name: Run tests
-      run: flutter test
-      
-    - name: Build web
-      run: flutter build web --release
-EOF
-
-# GitHub پر push کریں
-git add .github/workflows/flutter.yml
-git commit -m "Fix: Update to upload-artifact@v4"
-git push
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./digital-watch-pwa/dist  # اگر dist فولڈر digital-watch-pwa کے اندر ہے
