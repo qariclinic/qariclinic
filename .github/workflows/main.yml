@@ -1,21 +1,30 @@
-mkdir -p lib
-cat > lib/main.dart << 'EOF'
-import 'package:flutter/material.dart';
+name: Flutter CI
 
-void main() {
-  runApp(const MyApp());
-}
+on:
+  push:
+    branches: [ main ]
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(child: Text('Admin Dashboard')),
-      ),
-    );
-  }
-}
-EOF
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.13.0'
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Build web
+      run: flutter build web --release
+      
+    - name: Upload web build
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-build
+        path: build/web/
