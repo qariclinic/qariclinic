@@ -17,30 +17,6 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
-    - name: Check and fix pubspec
-      run: |
-        # Check if pubspec.yaml is valid
-        if head -1 pubspec.yaml | grep -q "name: Flutter CI"; then
-          echo "Creating valid pubspec.yaml..."
-          cat > pubspec.yaml << PUBSPEC
-name: flutter_admin_dashboard
-description: Flutter Admin Dashboard Template
-publish_to: 'none'
-version: 1.0.0+1
-environment:
-  sdk: '>=3.1.0 <4.0.0'
-  flutter: '>=3.13.0'
-dependencies:
-  flutter:
-    sdk: flutter
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-flutter:
-  uses-material-design: true
-PUBSPEC
-        fi
-        
     - name: Install dependencies
       run: flutter pub get
       
