@@ -1,19 +1,39 @@
-name: Jekyll site CI
+name: Flutter CI
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main, master ]
   pull_request:
+    branches: [ main, master ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Build Jekyll
-      uses: docker://jekyll/builder:latest
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
       with:
-        args: jekyll build --future
+        flutter-version: '3.13.0'
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Analyze code
+      run: flutter analyze
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build web
+      run: flutter build web --release
+      
+    - name: Upload web build
+      uses: actions/upload-artifact@v3
+      with:
+        name: web-build
+        path: build/web/
+        retention-days: 7
