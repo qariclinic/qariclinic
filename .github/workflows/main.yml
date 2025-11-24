@@ -17,6 +17,18 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
+    - name: Validate pubspec.yaml
+      run: |
+        if ! grep -q "environment:" pubspec.yaml; then
+          echo "Adding SDK constraint to pubspec.yaml"
+          cat >> pubspec.yaml << 'EOF'
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: '>=3.13.0'
+EOF
+        fi
+        
     - name: Install dependencies
       run: flutter pub get
       
@@ -29,9 +41,8 @@ jobs:
     - name: Build web
       run: flutter build web --release
       
-    - name: Upload web build artifact
+    - name: Upload web build
       uses: actions/upload-artifact@v4
       with:
         name: web-build
         path: build/web/
-        retention-days: 7
