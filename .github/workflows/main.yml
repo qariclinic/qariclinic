@@ -30,10 +30,3 @@ jobs:
       
     - name: Build web
       run: flutter build web --release
-      
-    - name: Upload web build
-      uses: actions/upload-artifact@v3
-      with:
-        name: web-build
-        path: build/web/
-        retention-days: 7
