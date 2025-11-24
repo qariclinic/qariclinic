@@ -17,6 +17,46 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
+    - name: Check project structure
+      run: |
+        echo "=== Project Structure ==="
+        find . -name "*.dart" -type f | head -10
+        echo "=== Lib Directory ==="
+        ls -la lib/ || echo "No lib directory"
+        
+    - name: Create main.dart if missing
+      run: |
+        if [ ! -f "lib/main.dart" ]; then
+          echo "Creating lib/main.dart..."
+          mkdir -p lib
+          cat > lib/main.dart << 'DART'
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Admin Dashboard',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const Scaffold(
+        body: Center(
+          child: Text('Admin Dashboard'),
+        ),
+      ),
+    );
+  }
+}
+DART
+        fi
+        
     - name: Install dependencies
       run: flutter pub get
       
