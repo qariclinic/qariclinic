@@ -1,36 +1,38 @@
-name: Flutter CI Debug
+name: Flutter CI
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  debug:
+  build:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: List project files
-      run: |
-        echo "=== Project Structure ==="
-        ls -la
-        echo "=== Lib Directory ==="
-        ls -la lib/ || echo "No lib directory"
-        echo "=== pubspec.yaml ==="
-        cat pubspec.yaml || echo "No pubspec.yaml"
-        
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.13.0'
         
-    - name: Flutter Doctor
-      run: flutter doctor -v
+    - name: Install dependencies
+      run: flutter pub get
       
-    - name: Check Flutter Project
+    - name: Build web
+      run: flutter build web --release
+      
+    - name: List build files
       run: |
-        flutter --version
-        echo "=== Dart files ==="
-        find . -name "*.dart" -type f | head -10
+        echo "=== Build Web Contents ==="
+        ls -la build/web/
+        echo "=== Total size ==="
+        du -sh build/web/
+      
+    - name: Upload web build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-build
+        path: build/web/
+        retention-days: 7
