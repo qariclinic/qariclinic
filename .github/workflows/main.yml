@@ -17,13 +17,35 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
-    - name: Fix pubspec.yaml
+    - name: Fix pubspec.yaml properly
       run: |
-        # Check and fix pubspec.yaml
-        if ! grep -q "environment:" pubspec.yaml; then
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.1.0 <4.0.0'" >> pubspec.yaml
-          echo "  flutter: '>=3.13.0'" >> pubspec.yaml
+        # Check if name field is valid
+        if ! grep -q "^name: [a-z_][a-z0-9_]*" pubspec.yaml; then
+          echo "Fixing pubspec.yaml name field..."
+          # Create a proper pubspec.yaml
+          cat > pubspec.yaml << 'EOF'
+name: flutter_admin_dashboard
+description: A Flutter responsive admin dashboard template
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: '>=3.13.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+EOF
         fi
         
     - name: Install dependencies
@@ -41,4 +63,5 @@ jobs:
     - name: Upload web build
       uses: actions/upload-artifact@v4
       with:
-        name:
+        name: web-build
+        path: build/web/
