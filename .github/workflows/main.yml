@@ -17,16 +17,13 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
-    - name: Validate pubspec.yaml
+    - name: Fix pubspec.yaml
       run: |
+        # Check and fix pubspec.yaml
         if ! grep -q "environment:" pubspec.yaml; then
-          echo "Adding SDK constraint to pubspec.yaml"
-          cat >> pubspec.yaml << 'EOF'
-
-environment:
-  sdk: '>=3.1.0 <4.0.0'
-  flutter: '>=3.13.0'
-EOF
+          echo "environment:" >> pubspec.yaml
+          echo "  sdk: '>=3.1.0 <4.0.0'" >> pubspec.yaml
+          echo "  flutter: '>=3.13.0'" >> pubspec.yaml
         fi
         
     - name: Install dependencies
@@ -44,5 +41,4 @@ EOF
     - name: Upload web build
       uses: actions/upload-artifact@v4
       with:
-        name: web-build
-        path: build/web/
+        name:
