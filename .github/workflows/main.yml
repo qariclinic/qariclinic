@@ -1,23 +1,45 @@
-name: Debug Flutter
+name: Flutter CI with Artifacts
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  debug:
+  build:
     runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-    - uses: subosito/flutter-action@v2
     
-    - name: Debug information
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.13.0'
+        
+    - name: Install dependencies
+      run: flutter pub get
+      
+    - name: Analyze code
+      run: flutter analyze
+      
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build web
+      run: flutter build web --release
+      
+    - name: List build contents
       run: |
-        echo "=== Current Directory ==="
-        pwd
-        echo "=== Files ==="
-        ls -la
-        echo "=== Flutter Doctor ==="
-        flutter doctor
-        echo "=== Looking for pubspec.yaml ==="
-        find . -name "pubspec.yaml" -type f
+        echo "=== Build Directory Contents ==="
+        find build/ -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -20
+        echo "=== Web Build Size ==="
+        du -sh build/web/
+      
+    - name: Upload web build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-build
+        path: build/web/
+        retention-days: 7
+        if-no-files-found: error
