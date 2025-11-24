@@ -1,4 +1,4 @@
-name: Deploy Flutter Admin Dashboard
+name: Build Real Admin Dashboard
 
 on:
   push:
@@ -7,36 +7,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
+    - uses: actions/checkout@v4
+    - uses: subosito/flutter-action@v2
+    - run: flutter pub get
+    - run: flutter build web --release
+    - uses: actions/upload-artifact@v4
       with:
-        flutter-version: '3.13.0'
-        
-    - name: Check Project Type
-      run: |
-        echo "=== پروجیکٹ چیک کر رہا ہوں ==="
-        if [ -f "pubspec.yaml" ] && [ -d "lib" ]; then
-          echo "✅ یہ Flutter پروجیکٹ ہے"
-          find lib/ -name "*.dart" | head -10
-        else
-          echo "❌ یہ Flutter پروجیکٹ نہیں ہے"
-          echo "اصل Flutter admin dashboard ڈاؤنلوڈ کر رہا ہوں..."
-          # یہاں آپ کا اصل admin dashboard code ڈاؤنلوڈ کریں
-        fi
-        
-    - name: Install Dependencies
-      run: flutter pub get
-      
-    - name: Build Web App
-      run: flutter build web --release --web-renderer html
-      
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build/web
+        name: admin-dashboard
+        path: build/web/
