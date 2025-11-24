@@ -1,3 +1,36 @@
+# پہلے locally web فولڈر بنائیں
+mkdir -p web
+
+# index.html بنائیں
+cat > web/index.html << 'EOF'
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <title>Admin Dashboard</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    #loading { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      height: 100vh; 
+      font-family: Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">Loading Admin Dashboard...</div>
+  <script src="flutter.js" defer></script>
+  <script src="main.dart.js" defer></script>
+</body>
+</html>
+EOF
+
+# پھر simple workflow بنائیں
+cat > .github/workflows/main.yml << 'EOF'
 name: Flutter CI
 
 on:
@@ -28,3 +61,9 @@ jobs:
       with:
         name: web-build
         path: build/web/
+EOF
+
+# Commit اور push کریں
+git add web/ .github/workflows/main.yml
+git commit -m "feat: add web directory and index.html"
+git push
