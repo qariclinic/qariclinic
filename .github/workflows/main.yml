@@ -1,4 +1,4 @@
-name: Flutter Auto Build
+name: Deploy Flutter Admin Dashboard
 
 on:
   push:
@@ -17,74 +17,26 @@ jobs:
       with:
         flutter-version: '3.13.0'
         
-    - name: Create Basic Flutter Project
+    - name: Check Project Type
       run: |
-        echo "=== Flutter پروجیکٹ بنا رہا ہوں ==="
-        
-        # اگر pubspec.yaml نہیں ہے تو بنائیں
-        if [ ! -f "pubspec.yaml" ]; then
-          echo "name: my_app" > pubspec.yaml
-          echo "description: A Flutter app" >> pubspec.yaml
-          echo "publish_to: 'none'" >> pubspec.yaml
-          echo "version: 1.0.0+1" >> pubspec.yaml
-          echo "" >> pubspec.yaml
-          echo "environment:" >> pubspec.yaml
-          echo "  sdk: '>=3.1.0 <4.0.0'" >> pubspec.yaml
-          echo "  flutter: '>=3.13.0'" >> pubspec.yaml
-          echo "" >> pubspec.yaml
-          echo "dependencies:" >> pubspec.yaml
-          echo "  flutter:" >> pubspec.yaml
-          echo "    sdk: flutter" >> pubspec.yaml
-          echo "" >> pubspec.yaml
-          echo "dev_dependencies:" >> pubspec.yaml
-          echo "  flutter_test:" >> pubspec.yaml
-          echo "    sdk: flutter" >> pubspec.yaml
-          echo "" >> pubspec.yaml
-          echo "flutter:" >> pubspec.yaml
-          echo "  uses-material-design: true" >> pubspec.yaml
+        echo "=== پروجیکٹ چیک کر رہا ہوں ==="
+        if [ -f "pubspec.yaml" ] && [ -d "lib" ]; then
+          echo "✅ یہ Flutter پروجیکٹ ہے"
+          find lib/ -name "*.dart" | head -10
+        else
+          echo "❌ یہ Flutter پروجیکٹ نہیں ہے"
+          echo "اصل Flutter admin dashboard ڈاؤنلوڈ کر رہا ہوں..."
+          # یہاں آپ کا اصل admin dashboard code ڈاؤنلوڈ کریں
         fi
-        
-        # lib/main.dart بنائیں
-        mkdir -p lib
-        echo "import 'package:flutter/material.dart';" > lib/main.dart
-        echo "" >> lib/main.dart
-        echo "void main() {" >> lib/main.dart
-        echo "  runApp(const MyApp());" >> lib/main.dart
-        echo "}" >> lib/main.dart
-        echo "" >> lib/main.dart
-        echo "class MyApp extends StatelessWidget {" >> lib/main.dart
-        echo "  const MyApp({super.key});" >> lib/main.dart
-        echo "" >> lib/main.dart
-        echo "  @override" >> lib/main.dart
-        echo "  Widget build(BuildContext context) {" >> lib/main.dart
-        echo "    return MaterialApp(" >> lib/main.dart
-        echo "      home: Scaffold(" >> lib/main.dart
-        echo "        body: Center(child: Text('Hello World'))," >> lib/main.dart
-        echo "      )," >> lib/main.dart
-        echo "    );" >> lib/main.dart
-        echo "  }" >> lib/main.dart
-        echo "}" >> lib/main.dart
-        
-        # web فولڈر بنائیں
-        mkdir -p web
-        echo "<!DOCTYPE html>" > web/index.html
-        echo "<html>" >> web/index.html
-        echo "<head>" >> web/index.html
-        echo "  <title>My App</title>" >> web/index.html
-        echo "</head>" >> web/index.html
-        echo "<body>" >> web/index.html
-        echo "  <script src=\"main.dart.js\"></script>" >> web/index.html
-        echo "</body>" >> web/index.html
-        echo "</html>" >> web/index.html
         
     - name: Install Dependencies
       run: flutter pub get
       
     - name: Build Web App
-      run: flutter build web --release
+      run: flutter build web --release --web-renderer html
       
-    - name: Upload Build
-      uses: actions/upload-artifact@v4
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
       with:
-        name: web-app
-        path: build/web/
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
