@@ -1,8 +1,10 @@
-name: Deploy to GitHub Pages
+name: Flutter CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
 
 jobs:
   build:
@@ -12,21 +14,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
       with:
-        node-version: '18'
+        flutter-version: '3.13.0'
         
     - name: Install dependencies
-      run: npm install
-      working-directory: ./digital-watch-pwa  # ← یہاں اپنا اصل فولڈر لکھیں
+      run: flutter pub get
       
-    - name: Build project
-      run: npm run build
-      working-directory: ./digital-watch-pwa  # ← یہی فولڈر یہاں بھی رکھیں
+    - name: Analyze code
+      run: flutter analyze
       
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./digital-watch-pwa/dist  # اگر dist فولڈر digital-watch-pwa کے اندر ہے
+    - name: Run tests
+      run: flutter test
+      
+    - name: Build web
+      run: flutter build web --release
