@@ -1,50 +1,21 @@
-name: Flutter CI
+mkdir -p lib
+cat > lib/main.dart << 'EOF'
+import 'package:flutter/material.dart';
 
-on:
-  push:
-    branches: [ main ]
+void main() {
+  runApp(const MyApp());
+}
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.13.0'
-        
-    - name: Create main.dart
-      run: |
-        mkdir -p lib
-        echo "import 'package:flutter/material.dart';" > lib/main.dart
-        echo "" >> lib/main.dart
-        echo "void main() => runApp(const MyApp());" >> lib/main.dart
-        echo "" >> lib/main.dart
-        echo "class MyApp extends StatelessWidget {" >> lib/main.dart
-        echo "  const MyApp({super.key});" >> lib/main.dart
-        echo "" >> lib/main.dart
-        echo "  @override" >> lib/main.dart
-        echo "  Widget build(BuildContext context) {" >> lib/main.dart
-        echo "    return MaterialApp(" >> lib/main.dart
-        echo "      home: Scaffold(" >> lib/main.dart
-        echo "        body: Center(child: Text('Admin Dashboard'))," >> lib/main.dart
-        echo "      )," >> lib/main.dart
-        echo "    );" >> lib/main.dart
-        echo "  }" >> lib/main.dart
-        echo "}" >> lib/main.dart
-        
-    - name: Install dependencies
-      run: flutter pub get
-      
-    - name: Build web
-      run: flutter build web --release
-      
-    - name: Upload web build
-      uses: actions/upload-artifact@v4
-      with:
-        name: web-build
-        path: build/web/
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Admin Dashboard')),
+      ),
+    );
+  }
+}
+EOF
