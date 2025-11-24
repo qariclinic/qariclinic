@@ -1,70 +1,36 @@
-name: Flutter CI
+name: Flutter CI Debug
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build:
+  debug:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: List project files
+      run: |
+        echo "=== Project Structure ==="
+        ls -la
+        echo "=== Lib Directory ==="
+        ls -la lib/ || echo "No lib directory"
+        echo "=== pubspec.yaml ==="
+        cat pubspec.yaml || echo "No pubspec.yaml"
+        
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.13.0'
         
-    - name: Check project structure
+    - name: Flutter Doctor
+      run: flutter doctor -v
+      
+    - name: Check Flutter Project
       run: |
-        echo "=== Project Structure ==="
+        flutter --version
+        echo "=== Dart files ==="
         find . -name "*.dart" -type f | head -10
-        echo "=== Lib Directory ==="
-        ls -la lib/ || echo "No lib directory"
-        
-    - name: Create main.dart if missing
-      run: |
-        if [ ! -f "lib/main.dart" ]; then
-          echo "Creating lib/main.dart..."
-          mkdir -p lib
-          cat > lib/main.dart << 'DART'
-import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Admin Dashboard',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('Admin Dashboard'),
-        ),
-      ),
-    );
-  }
-}
-DART
-        fi
-        
-    - name: Install dependencies
-      run: flutter pub get
-      
-    - name: Build web
-      run: flutter build web --release
-      
-    - name: Upload web build
-      uses: actions/upload-artifact@v4
-      with:
-        name: web-build
-        path: build/web/
