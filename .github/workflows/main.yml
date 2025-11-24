@@ -1,4 +1,4 @@
-name: Flutter CI with Artifacts
+name: Flutter CI
 
 on:
   push:
@@ -29,17 +29,9 @@ jobs:
     - name: Build web
       run: flutter build web --release
       
-    - name: List build contents
-      run: |
-        echo "=== Build Directory Contents ==="
-        find build/ -type f -name "*.html" -o -name "*.js" -o -name "*.css" | head -20
-        echo "=== Web Build Size ==="
-        du -sh build/web/
-      
     - name: Upload web build artifact
       uses: actions/upload-artifact@v4
       with:
         name: web-build
         path: build/web/
         retention-days: 7
-        if-no-files-found: error
