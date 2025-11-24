@@ -1,3 +1,8 @@
+# موجودہ فائل ڈیلیٹ کریں
+rm .github/workflows/flutter.yml
+
+# نئی فائل بنائیں
+cat > .github/workflows/flutter.yml << 'EOF'
 name: Flutter CI
 
 on:
@@ -30,3 +35,9 @@ jobs:
       
     - name: Build web
       run: flutter build web --release
+EOF
+
+# GitHub پر push کریں
+git add .github/workflows/flutter.yml
+git commit -m "Fix: Update to upload-artifact@v4"
+git push
