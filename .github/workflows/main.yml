@@ -291,12 +291,6 @@ class SettingsScreen extends StatelessWidget {
 }
 DART_EOF
 
-        # ڈیپنڈینسیز شامل کریں
-        echo "dependencies:" > pubspec.yaml
-        echo "  flutter:" >> pubspec.yaml
-        echo "    sdk: flutter" >> pubspec.yaml
-        echo "  cupertino_icons: ^1.0.2" >> pubspec.yaml
-        
         # پروجیکٹ بلڈ کریں
         echo "=== فلٹر ویب پروجیکٹ بلڈ ہو رہا ہے ==="
         flutter build web
