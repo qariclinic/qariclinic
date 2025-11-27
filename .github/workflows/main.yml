@@ -1,4 +1,4 @@
-name: Create Complete Admin Dashboard
+name: مکمل ایڈمن ڈیش بورڈ بنائیں
 
 on:
   push:
@@ -9,23 +9,23 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout code
+    - name: کوڈ چیک آؤٹ کریں
       uses: actions/checkout@v4
       
-    - name: Setup Flutter
+    - name: فلٹر سیٹ اپ کریں
       uses: subosito/flutter-action@v2
       with:
         flutter-version: '3.13.0'
         
-    - name: Create Complete Admin Dashboard
+    - name: مکمل ایڈمن ڈیش بورڈ بنائیں
       run: |
-        echo "=== Complete Flutter Admin Dashboard بنا رہا ہوں ==="
+        echo "=== مکمل فلٹر ایڈمن ڈیش بورڈ بنا رہا ہوں ==="
         
-        # نیا Flutter project بنائیں
+        # نیا فلٹر پروجیکٹ بنائیں
         flutter create --platforms web --org com.yourcompany admin_dashboard .
         
-        # Complete admin dashboard کا code بنائیں
-        cat > lib/main.dart << 'DART'
+        # مکمل ایڈمن ڈیش بورڈ کا کوڈ بنائیں
+        cat > lib/main.dart << 'DART_EOF'
 import 'package:flutter/material.dart';
 
 void main() {
@@ -38,7 +38,7 @@ class AdminDashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Admin Dashboard',
+      title: 'ایڈمن ڈیش بورڈ',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
@@ -69,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Dashboard'),
+        title: const Text('ایڈمن ڈیش بورڈ'),
         backgroundColor: Colors.blue[700],
         foregroundColor: Colors.white,
         elevation: 4,
@@ -81,30 +81,54 @@ class _DashboardScreenState extends State<DashboardScreen> {
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.person, size: 40, color: Colors.blue),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Admin User',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  Text(
-                    'admin@example.com',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ],
+              child: Text(
+                'ایڈمن پینل',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
               ),
             ),
-            _buildDrawerItem(Icons.dashboard, 'Dashboard', 0),
-            _buildDrawerItem(Icons.analytics, 'Analytics', 1),
-            _buildDrawerItem(Icons.people, 'Users', 2),
-            _buildDrawerItem(Icons.settings, 'Settings', 3),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text('ڈیش بورڈ'),
+              onTap: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.analytics),
+              title: const Text('تجزیات'),
+              onTap: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.people),
+              title: const Text('صارفین'),
+              onTap: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('ترتیبات'),
+              onTap: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.pop(context);
+              },
+            ),
           ],
         ),
       ),
@@ -119,36 +143,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+            label: 'ڈیش بورڈ',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.analytics),
-            label: 'Analytics',
+            label: 'تجزیات',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
-            label: 'Users',
+            label: 'صارفین',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            label: 'Settings',
+            label: 'ترتیبات',
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildDrawerItem(IconData icon, String title, int index) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(title),
-      selected: _currentIndex == index,
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-        Navigator.pop(context);
-      },
     );
   }
 }
@@ -164,69 +174,41 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Dashboard Overview',
+            'ڈیش بورڈ جائزہ',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           Row(
             children: [
-              _buildStatCard('Total Users', '1,234', Icons.people, Colors.blue),
+              _buildStatCard('کل صارفین', '1,234', Icons.people, Colors.blue),
               const SizedBox(width: 16),
-              _buildStatCard('Revenue', '\$12,456', Icons.attach_money, Colors.green),
+              _buildStatCard('آمدنی', '\$12,456', Icons.attach_money, Colors.green),
               const SizedBox(width: 16),
-              _buildStatCard('Orders', '567', Icons.shopping_cart, Colors.orange),
+              _buildStatCard('احکامات', '456', Icons.shopping_cart, Colors.orange),
               const SizedBox(width: 16),
-              _buildStatCard('Growth', '+12%', Icons.trending_up, Colors.purple),
+              _buildStatCard('ترقی', '+12%', Icons.trending_up, Colors.purple),
             ],
           ),
           const SizedBox(height: 30),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 10,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              padding: const EdgeInsets.all(16),
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Recent Activity',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 16),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: Icon(Icons.person_add, color: Colors.white),
+            child: Card(
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'حالیہ سرگرمیاں',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    title: Text('New user registered'),
-                    subtitle: Text('2 minutes ago'),
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.payment, color: Colors.white),
-                    ),
-                    title: Text('Payment received'),
-                    subtitle: Text('1 hour ago'),
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      child: Icon(Icons.shopping_cart, color: Colors.white),
-                    ),
-                    title: Text('New order placed'),
-                    subtitle: Text('3 hours ago'),
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    _buildActivityItem('نیا صارف شامل ہوا', '2 منٹ پہلے'),
+                    _buildActivityItem('آرڈر مکمل ہوا', '10 منٹ پہلے'),
+                    _buildActivityItem('ادائیگی موصول ہوئی', '1 گھنٹہ پہلے'),
+                    _buildActivityItem('پروڈکٹ اپ ڈیٹ ہوئی', '2 گھنٹے پہلے'),
+                  ],
+                ),
               ),
             ),
           ),
@@ -237,41 +219,31 @@ class HomeScreen extends StatelessWidget {
 
   Widget _buildStatCard(String title, String value, IconData icon, Color color) {
     return Expanded(
-      child: Container(
-        height: 120,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Icon(icon, color: color, size: 30),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  value,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  title,
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-              ],
-            ),
-          ],
+      child: Card(
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Icon(icon, size: 40, color: color),
+              const SizedBox(height: 10),
+              Text(
+                value,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              Text(title),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildActivityItem(String activity, String time) {
+    return ListTile(
+      leading: const Icon(Icons.circle, size: 8, color: Colors.green),
+      title: Text(activity),
+      trailing: Text(time, style: const TextStyle(color: Colors.grey)),
     );
   }
 }
@@ -283,7 +255,7 @@ class AnalyticsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'Analytics Screen',
+        'تجزیات اسکرین',
         style: TextStyle(fontSize: 24),
       ),
     );
@@ -297,7 +269,7 @@ class UsersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'Users Management Screen',
+        'صارفین مینجمنٹ اسکرین',
         style: TextStyle(fontSize: 24),
       ),
     );
@@ -311,24 +283,22 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: Text(
-        'Settings Screen',
+        'ترتیبات اسکرین',
         style: TextStyle(fontSize: 24),
       ),
     );
   }
 }
-DART
+DART_EOF
+
+        # ڈیپنڈینسیز شامل کریں
+        echo "dependencies:" > pubspec.yaml
+        echo "  flutter:" >> pubspec.yaml
+        echo "    sdk: flutter" >> pubspec.yaml
+        echo "  cupertino_icons: ^1.0.2" >> pubspec.yaml
         
-        echo "✅ Complete Admin Dashboard تیار ہے!"
+        # پروجیکٹ بلڈ کریں
+        echo "=== فلٹر ویب پروجیکٹ بلڈ ہو رہا ہے ==="
+        flutter build web
         
-    - name: Install Dependencies
-      run: flutter pub get
-      
-    - name: Build Web App
-      run: flutter build web --release --web-renderer html
-      
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build/web
+        echo "=== مکمل ایڈمن ڈیش بورڈ تیار ہے! ==="
